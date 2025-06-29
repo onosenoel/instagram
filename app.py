@@ -1,6 +1,7 @@
 from flask import Flask, request, render_template
 import requests
 import re
+import os
 
 app = Flask(__name__)
 
@@ -12,7 +13,9 @@ def get_instagram_video_url(post_url):
         res = requests.get(post_url, headers=headers)
         match = re.search(r'"video_url":"([^"]+)"', res.text)
         if match:
-            return match.group(1).replace("\u0026", "&").replace("\", "")
+            video_url = match.group(1)
+            video_url = video_url.replace("\\u0026", "&").replace("\\", "")
+            return video_url
         else:
             return "⚠️ No video found or it's a photo post."
     except Exception as e:
@@ -29,9 +32,6 @@ def index():
                 results[url] = get_instagram_video_url(url)
     return render_template("index.html", results=results)
 
-import os
-
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Get the port from Render
-    app.run(debug=False, host='0.0.0.0', port=port)
-
+    port = int(os.environ.get("PORT", 5000))  # For Render
+    app.run(debug=False, host="0.0.0.0", port=port)
