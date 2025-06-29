@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Instagram Video Downloader</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+        textarea { width: 100%; height: 150px; padding: 10px; }
+        input[type=submit] { padding: 10px 20px; margin-top: 10px; }
+        ul { margin-top: 20px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h2>📥 Instagram Video Downloader</h2>
+    <form method="post">
+        <label>Paste multiple Instagram video links below (one per line):</label><br>
+        <textarea name="urls" placeholder="https://www.instagram.com/p/xyz..."></textarea><br>
+        <input type="submit" value="Generate Download Links">
+    </form>
+
+    {% if results %}
+    <h3>🔗 Download Links:</h3>
+    <ul>
+        {% for url, video in results.items() %}
+            <li><strong>{{ url }}</strong><br>
+            {% if 'http' in video %}
+                <a href="{{ video }}" target="_blank">⬇️ Download Video</a>
+            {% else %}
+                {{ video }}
+            {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>
+</html>
