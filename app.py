@@ -29,5 +29,9 @@ def index():
                 results[url] = get_instagram_video_url(url)
     return render_template("index.html", results=results)
 
+import os
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Get the port from Render
+    app.run(debug=False, host='0.0.0.0', port=port)
+
